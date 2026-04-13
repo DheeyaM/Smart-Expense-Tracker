@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+</head>
+<body>
+    <section class="page">
+        <header class="header"> <h1>Expense Tracker</h1></header>
+        <aside class="summary">
+            <!-- Summary Cards -->
+            <div id="balanceCard">
+                <h3>Balance:</h3>
+            </div>
+            <div id="incomeCard">
+                <h3>Income Total:</h3>
+            </div>
+            <div id="expenseCard">
+                <h3>Expense Total:</h3>
+            </div>
+            <div id="foodCard">
+               <button id="foodbtn"> Food:</button>
+            </div>
+            <div id="transportCard">
+                <button id="transportbtn"> Transport:</button>
+            </div>
+            <div id="entertainmentCard">
+                <button id="entertainmentbtn"> Entertainment:</button>
+            </div>
+            <div id="personalCard">
+                <button id="personalbtn"> Personal:</button>
+            </div>
+            <div id="otherCard">
+                <button id="otherbtn"> Other:</button>
+            </div>
+            <div id="savingsCard">
+                <button id="savingsbtn"> Savings:</button>
+            </div>
+            
+        </aside>
+        <main class="main">
+            <h2>Add transactions:</h2>
+            <label for="descriptionInput">Description</label>
+            <input type="text" name="descriptionInput" id="descriptionInput">
+            <label for="amountInput">Amount</label>
+            <input type="number" name="amountInput" id="amountInput">
+            <select name="category" id="category">
+                <option value="" selected>Select Category</option>
+                <option value="food">Food</option>
+                <option value="transport">Transport</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="personal">Personal</option>
+                <option value="other">Other</option>
+                <option value="saving">Savings</option>
+            </select>
+            <button id="expense"> Expense</button>
+            <button id="income"> Income</button>
+        </main>
+        <section class="list">
+            <h4>Transaction list</h4>
+            <ul id="transactionList"></ul>
+        </section>
+    </section>
+</body>
+</html>
