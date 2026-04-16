@@ -1,4 +1,6 @@
 const transactions = [];
+let editingId = null;
+let deleteId = null;
 
 let transactionList = document.getElementById('transactionList');
 let descriptionInput = document.getElementById('descriptionInput');
@@ -7,33 +9,15 @@ let categoryInput = document.getElementById('category');
 let expensebtn = document.getElementById('expense');
 let incomebtn = document.getElementById('income');
 let transactionType = 'expense';
-let icon = document.createElement('div');
-let deletebtn = document.createElement('h5');
-deletebtn.textContent = 'X';
-deletebtn.style.cursor = 'pointer';
-deletebtn.style.marginLeft = '10px';
-let editbtn = document.createElement('h5');
-editbtn.textContent = '✏️';
-editbtn.style.cursor = 'pointer';
-editbtn.style.marginRight = '10px';
-
-
 
 
 expensebtn.addEventListener('click', () => {
     transactionType = 'expense';
-    icon.style.backgroundColor = 'red';
-    icon.style.width = '8px';
-    icon.style.height = '20px';
-    addTransaction();
-   
+    addTransaction();  
 });
 
 incomebtn.addEventListener('click', () => {
-    transactionType = 'income';
-    icon.style.backgroundColor = 'green';
-    icon.style.width = '8px';
-    icon.style.height = '20px';
+    transactionType = 'income'; 
     addTransaction();
 });
 
@@ -44,6 +28,7 @@ function addTransaction() {
     let category = categoryInput.value;
 
 transactions.push({
+    id: Date.now().toString(),
         description: description,
         amount: amount,
         category: category,
@@ -54,13 +39,32 @@ transactions.push({
     categoryInput.value = '';
     console.log(transactions);
 
+
     transactions.forEach((transaction) => {
+        let editbtn = document.createElement('h5');
+    let deletebtn = document.createElement('h5');
         let item = document.createElement('li');
+        item.dataset.id = transaction.id;
+deletebtn.textContent = 'X';
+deletebtn.style.cursor = 'pointer';
+deletebtn.style.marginLeft = '10px';
+editbtn.textContent = '✏️';
+editbtn.style.cursor = 'pointer';
+editbtn.style.marginRight = '10px';
+
         let descriptionSpan = document.createElement('span');
         descriptionSpan.style.marginLeft = '10px';
         let amountSpan = document.createElement('span');
         let categorySpan = document.createElement('span');
         descriptionSpan.textContent = transaction.description;
+        let icon = document.createElement('div');
+        icon.style.width = '8px';
+    icon.style.height = '20px';
+    if (transaction.type === 'expense') {
+        icon.style.backgroundColor = 'red';
+    } else {
+        icon.style.backgroundColor = 'green';
+    }
         let sideBtn = document.createElement('span');
         sideBtn.style.display = 'flex';
         sideBtn.appendChild(editbtn);
@@ -80,8 +84,44 @@ transactions.push({
          item.style.borderBottom = '1px solid #ccc';
         // item.style.textDecoration = "none";
         transactionList.appendChild(item);
+
+         editbtn.addEventListener('click', () => {
+    editingId = editbtn.parentElement.parentElement.dataset.id;
+    let transaction = transactions.find(t => t.id === editingId);
+    descriptionInput.value = transaction.description;
+    amountInput.value = transaction.amount;
+    categoryInput.value = transaction.category;
+    updateTransaction();
     });
 
+  deletebtn.addEventListener('click', () => {
+        deleteId = deletebtn.parentElement.parentElement.dataset.id;
+         let index = transactions.findIndex(t => t.id === deleteId);
+         if (index !== -1) {
+             transactions.splice(index, 1);
+         }
+        addTransaction();
+    });
 
-
+});
 }
+
+
+
+
+
+    function updateTransaction() {
+        let description = descriptionInput.value;
+        let amount = parseFloat(amountInput.value);
+        let category = categoryInput.value;
+        let transaction = transactions.find(t => t.id === editingId);
+        transaction.description = description;
+        transaction.amount = amount;
+        transaction.category = category;
+        editingId = null;
+        addTransaction();
+    }
+
+
+
+
