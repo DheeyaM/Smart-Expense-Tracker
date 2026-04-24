@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <section class="page">
@@ -15,13 +16,14 @@
         <aside class="summary">
             <!-- Summary Cards -->
             <div id="balanceCard">
-                <h3>Balance:</h3>
+                <h3 id="balanceValue">Balance:</h3>
+
             </div>
             <div id="incomeCard">
-                <h3>Income:</h3>
+                <h3 id="incomeValue">Income:</h3>
             </div>
             <div id="expenseCard">
-                <h3>Expense:</h3>
+                <h3 id="expenseValue">Expense:</h3>
             </div>
             <div id="foodCard">
                <button id="foodbtn" class="category-btn"> Food:      R</button>
@@ -69,6 +71,9 @@
             <ul id="transactionList"></ul>
         </section>
         </div>
+        </div>
+        <div>
+            <canvas id="myChart"></canvas>
         </div>
     </section>
 </body>
