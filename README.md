@@ -1,12 +1,14 @@
 # Smart Expense Tracker
 
-A JavaScript web app to track income and expenses with categories, filters, and monthly charts.
+A vanilla JavaScript web app to track income and expenses.
 
-## Features (in progress)
-- Add / edit / delete transactions (Done)
-- Category tagging
-- Monthly charts
-- LocalStorage persistence
+## Features
+- Add, edit and delete transactions
+- Category tagging (Food, Transport, Entertainment, Savings, Personal, Others)
+- Filter transactions by category
+- Balance, income and expense totals
+- Doughnut chart visualising spending by category (Chart.js)
+- localStorage persistence — data saved on refresh
 
 ## Tech Used
 - HTML, CSS, JavaScript
