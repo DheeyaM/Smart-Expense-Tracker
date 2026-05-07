@@ -180,3 +180,8 @@ header{
     background-color: var(--accent);
     border-radius: 5px;
 }
+
+.list{
+    overflow-y: scroll;
+    max-height: 250px;
+}

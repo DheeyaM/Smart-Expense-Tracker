@@ -1,6 +1,7 @@
 const transactions = [];
 let editingId = null;
 
+
 let transactionList = document.getElementById("transactionList");
 let descriptionInput = document.getElementById("descriptionInput");
 let amountInput = document.getElementById("amountInput");
@@ -15,31 +16,37 @@ let savings = 0;
 let others = 0;
 let personal = 0;
 let chart = document.getElementById("myChart");
+let filterCat = "null";
+
 
 expensebtn.addEventListener("click", () => {
   if (editingId) {
     edit();
-    populateTransactionList();
+    populateTransactionList(transactions);
     clearInput();
     updateBalance();
     updateCards();
   } else {
     transactionType = "expense";
     addTransaction();
+    
   }
+  saving();
 });
 
 incomebtn.addEventListener("click", () => {
   if (editingId) {
     edit();
-    populateTransactionList();
+    populateTransactionList(transactions);
     clearInput();
     updateBalance();
     updateCards();
   } else {
     transactionType = "income";
     addTransaction();
+    
   }
+  saving();
 });
 
 function addTransaction() {
@@ -56,15 +63,16 @@ function addTransaction() {
   });
   clearInput();
   console.log(transactions);
-  populateTransactionList();
+  populateTransactionList(transactions);
   updateBalance();
   updateCards();
+  saving();
 }
 
 //populate the transaction list
-function populateTransactionList() {
+function populateTransactionList(list) {
   transactionList.innerHTML = "";
-  transactions.forEach((transaction) => {
+  list.forEach((transaction) => {
     let item = document.createElement("li");
     let editbtn = document.createElement("h5");
     let deletebtn = document.createElement("h5");
@@ -111,7 +119,7 @@ function populateTransactionList() {
 
     editbtn.addEventListener("click", (e) => {
       let id = e.target.parentElement.parentElement.dataset.id;
-      let transaction = transactions.find((t) => t.id === id);
+      let transaction = list.find((t) => t.id === id);
       descriptionInput.value = transaction.description;
       amountInput.value = transaction.amount;
       categoryInput.value = transaction.category;
@@ -121,18 +129,19 @@ function populateTransactionList() {
     deletebtn.addEventListener("click", (e) => {
       let id = e.target.parentElement.parentElement.dataset.id;
       if (confirm("Are you sure you want to delete this transaction?")) {
-      let transaction = transactions.findIndex((t) => t.id === id);
-      transactions.splice(transaction, 1);
-      populateTransactionList();
+      let transaction = list.findIndex((t) => t.id === id);
+      list.splice(transaction, 1);
+      populateTransactionList(transactions);
         updateBalance();
         updateCards();
+        saving();
       }
     });
   });
 }
 
 // Call the function to populate the transaction list
-populateTransactionList();
+populateTransactionList(transactions);
 
 function clearInput() {
   descriptionInput.value = "";
@@ -149,6 +158,7 @@ function edit(){
 }
 
 function updateBalance() {
+  saving();
 let balance = 0;
 let income = 0;
 let expense = 0;
@@ -193,6 +203,7 @@ const myChart = new Chart(chart, {
 
 
 function updateCards() {
+  saving();
 food = 0;
 transport = 0;
 entertainment = 0;
@@ -250,6 +261,7 @@ transactions.forEach((transaction) => {
     }
    
   }
+  
 });
 transportValue.textContent = `Transport: R${parseInt(transport)}`;
 entertainmentValue.textContent = `Entertainment: R${parseInt(entertainment)}`;
@@ -261,3 +273,86 @@ myChart.data.datasets[0].data = [food, transport, entertainment, savings, others
 myChart.update();
 }
 
+
+function filter(){
+  let filteredList = transactions.filter((t) => t.category === filterCat);
+  populateTransactionList(filteredList);
+}
+
+let foodbtn = document.getElementById("foodbtn");
+let transportbtn = document.getElementById("transportbtn");
+let entertainmentbtn = document.getElementById("entertainmentbtn");
+let personalbtn = document.getElementById("personalbtn");
+let otherbtn = document.getElementById("otherbtn");
+let savingsbtn = document.getElementById("savingsbtn");
+
+foodbtn.addEventListener("click", () => {
+  if (filterCat === "Food"){
+    filterCat = "null"
+    populateTransactionList(transactions);
+  } else {
+  filterCat = "Food";
+  filter();
+  }
+});
+transportbtn.addEventListener("click", () => {
+ if (filterCat === "Transport"){
+    filterCat = "null"
+    populateTransactionList(transactions);
+  } else {
+  filterCat = "Transport";
+  filter();
+  }
+});
+entertainmentbtn.addEventListener("click", () => {
+  if (filterCat === "Entertainment"){
+    filterCat = "null"
+    populateTransactionList(transactions);
+  } else {
+  filterCat = "Entertainment";
+  filter();
+  }
+});
+personalbtn.addEventListener("click", () => {
+  if (filterCat === "Personal"){
+    filterCat = "null"
+    populateTransactionList(transactions);
+  } else {
+  filterCat = "Personal";
+  filter();
+  }
+});
+otherbtn.addEventListener("click", () => {
+ if (filterCat === "Other"){
+    filterCat = "null"
+    populateTransactionList(transactions);
+  } else {
+  filterCat = "Other";
+  filter();
+  }
+});
+savingsbtn.addEventListener("click", () => {
+ if (filterCat === "Savings"){
+    filterCat = "null"
+    populateTransactionList(transactions);
+  } else {
+  filterCat = "Savings";
+  filter();
+  }
+});
+
+function saving(){
+  localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+
+function loading(){
+  let saved = localStorage.getItem('transactions');
+  if (saved){
+    transactions.push(...JSON.parse(saved));
+  }
+}
+
+loading();
+populateTransactionList(transactions);
+updateBalance();
+updateCards();
